@@ -18,15 +18,16 @@ else
     exit 1
 fi
 
-
+# run github_token.sh to get token in environment
+source ./github_token.sh
 export DOCKER_BUILDKIT=1
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-
-(cd "$SCRIPT_DIR" && \
+(cd "$SCRIPT_DIR"/../ && \
 docker build \
 --build-arg BASE_IMAGE=$BASE_IMAGE \
--f ./Dockerfile \
+--build-arg GITHUB_TOKEN=GITHUB_TOKEN \
+-f ./docker/Dockerfile \
 --platform $PLATFORM \
 -t "big-juice/pi:core-$ARCH" \
-. )
+./src )
