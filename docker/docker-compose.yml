@@ -1,0 +1,11 @@
+version: '2.4'
+
+services:
+  core:
+    image: big-juice/pi:core-arm64
+    privileged: true
+    ipc: host
+    network_mode: host
+    pid: host
+    restart: always
+    command: ["sleep", "infinity"]
