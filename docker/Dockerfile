@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install -y -qq --no-install-recommends  \
 
 # install rust
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-RUN echo "export PATH=/root/.cargo/bin:${PATH}" >> /root/.bashrc
 
-# build core code
+ENV PATH="/root/.cargo/bin:$PATH"
+
 RUN cd core && cargo build --release
