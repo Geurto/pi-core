@@ -9,3 +9,11 @@ services:
     pid: host
     restart: always
     command: ["sleep", "infinity"]
+  piranha:
+    image: big-juice/pi:piranha-arm64
+    privileged: true
+    ipc: host
+    network_mode: host
+    pid: host
+    restart: always
+    command: ["sleep", "infinity"]

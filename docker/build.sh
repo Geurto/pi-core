@@ -1,5 +1,7 @@
 #!/bin/bash
 
+MODULE=core
+
 # get ARCH from input argument
 ARCH=$1
 if [ -z "$ARCH" ]; then
@@ -26,8 +28,7 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 (cd "$SCRIPT_DIR"/../ && \
 docker build \
 --build-arg BASE_IMAGE=$BASE_IMAGE \
---build-arg GITHUB_TOKEN=GITHUB_TOKEN \
 -f ./docker/Dockerfile \
 --platform $PLATFORM \
--t "big-juice/pi:core-$ARCH" \
+-t "big-juice/pi:$MODULE-$ARCH" \
 ./src )

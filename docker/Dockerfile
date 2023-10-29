@@ -16,31 +16,9 @@ RUN apt-get update && apt-get install -y -qq --no-install-recommends  \
     && apt-get autoremove \
     && apt-get clean
 
-# pip installs
-RUN python3 -m pip install --no-cache-dir -r /home/pi/src/dependencies/pip.txt
-
-# install Arduino CLI @todo probably separate this to a different container
-RUN if \
-        [ "$(uname -m)" = "aarch64" ] ; then \
-    echo "Downloading arm64 version of arduino-cli" && \
-    wget -O arduino-cli.tar.bz2 https://downloads.arduino.cc/arduino-cli/arduino-cli_latest_Linux_ARM64.tar.gz; \
-    fi
-
-RUN if \
-        [ "$(uname -m)" = "x86_64" ] ; then \
-    echo "Downloading x86_64 version of arduino-cli" && \
-    wget -O arduino-cli.tar.bz2 https://downloads.arduino.cc/arduino-cli/arduino-cli_latest_Linux_64bit.tar.gz; \
-    fi
-
-RUN tar -xf arduino-cli.tar.bz2 && \
-    mv arduino-cli /usr/local/bin/arduino-cli && \
-    rm arduino-cli.tar.bz2
-RUN arduino-cli config init && \
-    arduino-cli core update-index
-RUN arduino-cli core install esp32:esp32
-
-# get piranha repo
-RUN git clone https://${GITHUB_TOKEN}@github.com/Geurto/piranha.git
-
 # install rust
-RUN curl --proto '=https' --tlsv1.2 -sSfy https://sh.rustup.rs | sh
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+RUN echo "export PATH=/root/.cargo/bin:${PATH}" >> /root/.bashrc
+
+# build core code
+RUN cd core && cargo build --release
